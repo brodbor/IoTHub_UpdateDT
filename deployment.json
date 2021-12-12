@@ -1,0 +1,152 @@
+{
+    "modulesContent": {
+        "$edgeAgent": {
+            "properties.desired": {
+                "modules": {
+                    "spatialanalysis": {
+                        "settings": {
+                            "image": "mcr.microsoft.com/azure-cognitive-services/vision/spatial-analysis:latest",
+                            "createOptions": "{\"k8s-experimental\": {\"volumes\": [{\"volume\": {\"name\": \"dshm\",\"emptyDir\": {\"medium\": \"Memory\",\"sizeLimit\": 536870912}},\"volumeMounts\": [{\"name\": \"dshm\",\"mountPath\": \"/dev/shm\",\"mountPropagation\": \"None\",\"readOnly\": \"false\",\"subPath\": \"\"}]}]},\"HostConfig\": {\"IpcMode\": \"host\",\"PortBindings\":{\"2222/tcp\":[{\"HostPort\":\"2222\"}]},\"Binds\": [\"/tmp/.X11-unix:/tmp/.X11-unix\"],\"Runtime\": \"nvidia\",\"ShmSize\":536870912,\"LogConfig\": {\"Type\": \"json-file\",\"Config\": {\"max-size\": \"10m\",\"max-file\": \"200\"}}}}"
+                        },
+                        "type": "docker",
+                        "env": {
+                            "DISPLAY": {
+                                "value": ":1"
+                            },
+                            "QT_X11_NO_MITSHM": {
+                                "value": "1"
+                            },
+                            "ARCHON_LOG_LEVEL": {
+                                "value": "info"
+                            },
+                            "ARCHON_SHARED_BUFFER_LIMIT": {
+                                "value": "377487360"
+                            },
+                            "ARCHON_GRAPH_READY_TIMEOUT": {
+                                "value": "600"
+                            },
+                            "OMP_WAIT_POLICY": {
+                                "value": "PASSIVE"
+                            },
+                            "EULA": {
+                                "value": "accept"
+                            },
+                            "BILLING":{
+                                 "value": "https://as-comp-vision-edge.cognitiveservices.azure.com/"
+                             },
+                             "APIKEY":{
+                                 "value": "a6dcfb95320f45ec8ce1ffb98e83aebe"
+                             },
+                            "ORT_TENSORRT_ENGINE_CACHE_ENABLE": {
+                                "value": "1"
+                            }
+                        },
+                        "status": "running",
+                        "restartPolicy": "always"
+                    }
+                },
+                "runtime": {
+                    "settings": {
+                        "minDockerVersion": "v1.25"
+                    },
+                    "type": "docker"
+                },
+                "schemaVersion": "1.0",
+                "systemModules": {
+                    "edgeAgent": {
+                        "settings": {
+                            "image": "mcr.microsoft.com/azureiotedge-agent:1.1",
+                            "createOptions": ""
+                        },
+                        "type": "docker"
+                    },
+                    "edgeHub": {
+                        "settings": {
+                            "image": "mcr.microsoft.com/azureiotedge-hub:1.1",
+                            "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"443/tcp\":[{\"HostPort\":\"443\"}],\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}]}}}"
+                        },
+                        "type": "docker",
+                        "env": {
+                            "SslProtocols": {
+                                "value": "tls1.2"
+                            }
+                        },
+                        "status": "running",
+                        "restartPolicy": "always"
+                    }
+                }
+            }
+        },
+        "$edgeHub": {
+            "properties.desired": {
+                "routes": {
+                    "route": "FROM /messages/* INTO $upstream"
+                },
+                "schemaVersion": "1.0",
+                "storeAndForwardConfiguration": {
+                    "timeToLiveSecs": 7200
+                }
+            }
+        },
+
+        "spatialanalysis": {
+            "properties.desired": {
+                "globalSettings": {
+                    "platformTelemetryEnabled": false,
+                    "customerTelemetryEnabled": true
+                },
+                "graphs": {
+                    "cognitiveservices_vision_spatialanalysis_1": {
+                        "operationId": "cognitiveservices.vision.spatialanalysis",
+                        "parameters": {
+                            "INPUT_VIDEO_WIDTH": 1920
+                        },
+                        "sharedNodes": {
+                            "sharedDetector": {
+                                "node": "SpatialAnalysisGraph/detector",
+                                "parameters": {
+                                    "DETECTOR_NODE_CONFIG": "{\"gpu_index\":0}"
+                                }
+                            },
+                            "sharedFacemask": {
+                                "node": "SpatialAnalysisGraph/facemask",
+                                "parameters": {
+                                    "VIDEO_DECODE_GPU_INDEX": 0,
+                                    "ENABLE_FACE_MASK_CLASSIFIER": true
+                                }
+                            },
+                            "sharedCalibrator": {
+                                "node": "SpatialAnalysisGraph/cameracalibrator",
+                                "parameters": {
+                                    "CAMERACALIBRATOR_NODE_CONFIG": "{ \"gpu_index\": 0, \"do_calibration\": true}"
+                                }
+                            }
+                        },
+                        "instances": {
+
+
+                            "checkoutArea": {
+                                "sharedNodeMap": {
+                                    "SpatialAnalysisGraph/detector": "sharedDetector",
+                                    "SpatialAnalysisGraph/facemask": "sharedFacemask",
+                                    "SpatialAnalysisGraph/cameracalibrator": "sharedCalibrator"
+
+                                },
+                                "parameters": {
+                                    "VIDEO_URL": "https://bbtempstorageaccnt.blob.core.windows.net/aivideo/zone-checkout.mp4?sv=2019-10-10&st=2021-11-14T00%3A15%3A43Z&se=2033-11-15T00%3A15%3A00Z&sr=b&sp=r&sig=4l6AEzxhXn26AmAAUGZk5sycjkawD9xs2OciwA69VDw%3D",
+                                    "VIDEO_SOURCE_ID": "store",
+                                    "VIDEO_IS_LIVE": false,
+                                    "VIDEO_DECODE_GPU_INDEX": 0,
+                                    "SPACEANALYTICS_CONFIG": "{\"zones\":[{\"name\":\"queue\",\"polygon\":[[0,0],[1,0],[1,1],[0,1],[0,0]], \"events\": [{\"type\":\"count\", \"config\":{\"trigger\": \"event\", \"threshold\":16, \"focus\": \"footprint\"}}]}]}"
+                                },
+                                "enabled": true
+                            }
+
+                        },
+                        "enabled": true
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Canvas tutorial</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+
+    $.ajax({
+        url: "https://iothubtodigitaltwins.azurewebsites.net/api/ReadAzureDT",
+        //force to handle it as text
+        dataType: "text",
+        success: function(data) {
+
+            //data downloaded so we call parseJSON function
+            //and pass downloaded data
+            var json = $.parseJSON(data);
+            //now json variable contains data in json format
+            //let's display a few items
+        if(json.persons != null){
+
+
+
+        $('#date').html(json.frameDate);
+        $('#count').html(json.personCount);
+        $('#frame').html(json.frameNumber + "  /  "+ displayTime(json.frameNumber) );
+
+
+          var canvas = document.getElementById('canvas');
+
+
+          var ctx = canvas.getContext('2d');
+
+/*
+             var context = canvas.getContext('2d');
+
+             ctx.lineWidth = 4;
+ctx.strokeStyle = "blue";
+
+
+             ctx.beginPath();
+              ctx.moveTo(50,1080);
+              ctx.lineTo(900,360);
+              ctx.lineTo(1800,490);
+             ctx.lineTo(1200,1080);
+             ctx.lineTo(50,1080);
+             ctx.stroke();
+*/
+  var jPersons = $.parseJSON(json.persons);
+
+
+
+
+            for (var i=0;i<jPersons.length;++i)
+            {
+
+
+              var obj =jPersons[i];
+              var x = (1920*obj["x"]);
+              var y = (1080*obj["y"]);
+
+
+
+
+              if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
+                var circle = new Path2D();
+                circle.arc(x, y, 25, 0, 2 * Math.PI);
+               ctx.fill(circle);
+
+
+
+
+              }
+
+            }
+          }
+             setInterval('location.reload()', 3000);
+        }
+    });
+
+
+    });
+
+    function showTwoDigits(number) {
+    return ("00" + number).slice(-2);
+}
+
+    function displayTime(currentFrame) {
+        var fps = 24;
+        var h = Math.floor(currentFrame/(60*60*fps));
+        var m = (Math.floor(currentFrame/(60*fps))) % 60;
+        var s = (Math.floor(currentFrame/fps)) % 60;
+        var f = currentFrame % fps;
+        return showTwoDigits(h) + ":" + showTwoDigits(m) + ":" + showTwoDigits(s) + ":" + showTwoDigits(f);
+    }
+
+
+    </script>
+
+
+
+
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+  </head>
+  <body >
+<p style="font-weight:bold;font-size:20pt">
+    Frame/Time: <span id="frame" > </span><br>
+    Persons: <span id="count"> </span><br>
+    Date: <span id="date"></span>
+
+</p>
+    <canvas id="canvas" width="1920" height="1080" style="background: url('')"></canvas>
+
+
+  </body>
+</html>

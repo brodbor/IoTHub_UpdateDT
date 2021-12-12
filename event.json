@@ -1,0 +1,130 @@
+{
+  "events": [
+    {
+      "id": "48c1b89bce4a403b93f430a9a5c3869c",
+      "type": "personCountEvent",
+      "detectionIds": [
+        "20b443d730a84008874f4ff86e878b25",
+        "317edf1b9179453183efb0f25fe83663",
+        "77eb8a7bf95648298ff69d43752bcd69"
+      ],
+      "properties": {
+        "@type": "type.googleapis.com/microsoft.rtcv.insights.PeopleCountEventMetadata",
+        "personCount": 3
+      },
+      "zone": "queue",
+      "trigger": "event"
+    }
+  ],
+  "sourceInfo": {
+    "id": "ToyCamera",
+    "timestamp": "2021-10-28T18:59:24.614Z",
+    "width": 1920,
+    "height": 1440,
+    "frameId": "3488",
+    "cameraCalibrationInfo": {
+      "status": "Calibrating;progress=27/160",
+      "cameraHeight": 0,
+      "focalLength": 0,
+      "tiltupAngle": 0,
+      "lastCalibratedTime": ""
+    },
+    "imagePath": ""
+  },
+  "detections": [
+    {
+      "type": "person",
+      "metadataType": "personTracking",
+      "id": "20b443d730a84008874f4ff86e878b25",
+      "region": {
+        "type": "RECTANGLE",
+        "points": [
+          {
+            "x": 0.5324101132486809,
+            "y": 0.3810092695393937
+          },
+          {
+            "x": 0.7219766256025274,
+            "y": 0.7639380714146108
+          }
+        ],
+        "name": ""
+      },
+      "metadata": {
+        "trackingId": "f0d8dc7729b84308952db9d6bdf4ba21",
+        "groundOrientationAngle": "Infinity",
+        "mappedImageOrientation": "Infinity",
+        "speed": "Infinity",
+        "attributes": {}
+      },
+      "confidence": 0.8603958487510681,
+      "footprint": {
+        "x": "Infinity",
+        "y": "Infinity"
+      }
+    },
+    {
+      "type": "person",
+      "metadataType": "personTracking",
+      "id": "317edf1b9179453183efb0f25fe83663",
+      "region": {
+        "type": "RECTANGLE",
+        "points": [
+          {
+            "x": 0.2699990483731761,
+            "y": 0.40713787277677643
+          },
+          {
+            "x": 0.4659678909914018,
+            "y": 0.7424591255320535
+          }
+        ],
+        "name": ""
+      },
+      "metadata": {
+        "trackingId": "5e596d792f9e4263afee3f3732388983",
+        "groundOrientationAngle": "Infinity",
+        "mappedImageOrientation": "Infinity",
+        "speed": "Infinity",
+        "attributes": {}
+      },
+      "confidence": 0.9106318950653076,
+      "footprint": {
+        "x": "Infinity",
+        "y": "Infinity"
+      }
+    },
+    {
+      "type": "person",
+      "metadataType": "personTracking",
+      "id": "77eb8a7bf95648298ff69d43752bcd69",
+      "region": {
+        "type": "RECTANGLE",
+        "points": [
+          {
+            "x": 0.4223336701345916,
+            "y": 0.16038910824031447
+          },
+          {
+            "x": 0.5747025784506905,
+            "y": 0.5419090541391591
+          }
+        ],
+        "name": ""
+      },
+      "metadata": {
+        "trackingId": "da5abe93a3904c129a9793e9d60d6f93",
+        "groundOrientationAngle": "Infinity",
+        "mappedImageOrientation": "Infinity",
+        "speed": "Infinity",
+        "attributes": {}
+      },
+      "confidence": 0.7845427393913269,
+      "footprint": {
+        "x": "Infinity",
+        "y": "Infinity"
+      }
+    }
+  ],
+  "schemaVersion": "1.0"
+}
